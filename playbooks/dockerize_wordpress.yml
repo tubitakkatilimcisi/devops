@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  remote_user: root
+  become: yes
+  tasks:
+    - name: start mysql
+      docker_container:
+        name: database_wordpress
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: trendyol
+          MYSQL_DATABASE: trendyol
+          MYSQL_USER: trendyol
+          MYSQL_PASSWORD: trendyol
+
+    - name: start wordpress
+      docker_container:
+        name: trendyol
+        image: trendyol
+        links:
+          - "database_wordpress:mysql"
+        ports:
+          - "80:80"
